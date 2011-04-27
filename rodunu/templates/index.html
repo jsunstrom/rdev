@@ -1,0 +1,17 @@
+{% extends 'master.html' %}
+
+{% block title %}
+RecipeEngine - A recipe app built with Django, and Appengine
+{% endblock %}
+
+{% block contents %}
+<h2>RecipeEngine - A recipe app built with Django, and Appengine </h2>
+
+{% for recipe in recipes %}
+<div class="recipe">
+<a href="{{recipe.get_absolute_url}}">{{recipe.name}}</a>
+<br>
+By {{recipe.user}} on {{recipe.created_on|date}}
+</div>
+{% endfor %}
+{% endblock %}

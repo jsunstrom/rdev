@@ -10,11 +10,19 @@ def index(request):
 def add(request):
     if request.method == 'POST':
         name = request.POST['name']
+        ing1 = request.POST['ingredient1']
+        ing2 = request.POST['ingredient2']
         recipe = models.Recipe(name = name)
         recipe.save()
+        ingredient1 = models.Ingredient(recipe = recipe, name = ing1, quantity = 2.0)
+        ingredient2 = models.Ingredient(recipe = recipe, name = ing2, quantity = 1.0)
+
+        ingredient1.save()
+        ingredient2.save()
+
         return HttpResponseRedirect(recipe.get_absolute_url())
 
-    return render_to_response('add.html')#, {'recent': ''})# models.Recipe.all().order('-created_on').fetch(5)})
+    return render_to_response('add.html')
 
 def view(request, recipe_key):
     recipe = models.Recipe.get(recipe_key)

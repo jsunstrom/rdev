@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     (r'^$', 'rodunu.recipe.views.index'),
     (r'^recipe/add/$', 'rodunu.recipe.views.add'),
     (r'^recipe/(?P<recipe_key>[^\.^/]+)/$', 'rodunu.recipe.views.view'),
+    (r'^assets/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'rodunu/assets/'}),
     # Example:
     # (r'^rodunu/', include('rodunu.foo.urls')),
 

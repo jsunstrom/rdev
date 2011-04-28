@@ -1,0 +1,30 @@
+.contents
+{
+    width: 80%;
+    float: right;
+}
+.sidebar
+{
+    width: 15%;
+    float: right;
+}
+
+.ingredient
+{
+    padding: 3px;
+}
+
+.ingredient.qty
+{
+    width: 35px;
+}
+
+.ingredient .amount
+{
+    width: 75px;
+}
+
+.ingredient
+{
+    width: 150px;
+}

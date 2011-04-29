@@ -1,42 +1,10 @@
 {% extends 'master.html' %}
 
 {% block contents %}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#btnAdd').click(function() {
-                var num		= $('.cInput').length;	// how many "duplicatable" input fields we currently have
-                var newNum	= new Number(num + 1);		// the numeric ID of the new input field being added
 
-                // create the new element via clone(), and manipulate it's ID using newNum value
-                var newElem = $('#cInput' + num).clone().attr('id', 'cInput' + newNum);
-
-                // manipulate the name/id values of the input inside the new element
-                newElem.children(':first').children('#qty' + num).attr('id', 'qty' + newNum).attr('name', 'qty' + newNum);
-                newElem.children(':first').children('#amount' + num).attr('id', 'amount' + newNum).attr('name', 'amount' + newNum);
-                newElem.children(':first').children('#ingredient' + num).attr('id', 'ingredient' + newNum).attr('name', 'ingredient' + newNum);
-
-                // insert the new element after the last "duplicatable" input field
-                $('#cInput' + num).after(newElem);
-
-                // enable the "remove" button
-                $('#btnDel').attr('disabled','');
-            });
-
-            $('#btnDel').click(function() {
-                var num	= $('.clonedInput').length;	// how many "duplicatable" input fields we currently have
-                $('#cInput' + num).remove();		// remove the last element
-
-                // enable the "add" button
-                $('#btnAdd').attr('disabled','');
-
-                // if only one element remains, disable the "remove" button
-                if (num-1 == 1)
-                    $('#btnDel').attr('disabled','disabled');
-            });
-
-            $('#btnDel').attr('disabled','disabled');
-        });
-    </script>
+    {% for key,value in errors.items %}
+        {{ key }} {{ value }}<br />
+    {% endfor %}
 
    <form method="post" action="">
      <div>
@@ -44,15 +12,55 @@
        <div id="cInput1" class="cInput">
            <div class="recipe">
                <input type="text" class="ingredient qty" name="qty1" id="qty1" />
-               <input type="text" class="ingredient amount" name="amount1" id="amount1" />
+               <input type="text" class="ingredient unit" name="unit1" id="unit1" />
                <input type="text" class="ingredient" name="ingredient1" id="ingredient1" />
            </div>
        </div>
-            <div>
-            <input type="button" id="btnAdd" value="add another ingredient" />
-            <input type="button" id="btnDel" value="remove ingredient" />
-        </div>
        <input type="submit" name="submit">
      </div>
    </form>
+
+    <script type="text/javascript">
+        var num = 0;
+        $(document).ready(function() {
+            num = $('.cInput').length;	// how many "duplicatable" input fields we currently have
+
+            $('#qty' + num).keydown(function(event) {
+                if ($('#qty' + num).length > 0) addIngredientFields();
+            });
+        })
+
+        function addIngredientFields() {
+            var newNum	= new Number(num + 1);		// the numeric ID of the new input field being added
+
+            // create the new element via clone(), and manipulate it's ID using newNum value
+            var newElem = $('#cInput' + num).clone().attr('id', 'cInput' + newNum);
+
+            // manipulate the name/id values of the input inside the new element
+            newElem.children(':first').children('#qty' + num).attr('id', 'qty' + newNum).attr('name', 'qty' + newNum);
+            newElem.children(':first').children('#unit' + num).attr('id', 'unit' + newNum).attr('name', 'unit' + newNum);
+            newElem.children(':first').children('#ingredient' + num).attr('id', 'ingredient' + newNum).attr('name', 'ingredient' + newNum);
+
+            // insert the new element after the last "duplicatable" input field
+            $('#cInput' + num).after(newElem);
+            num++;
+            registerEvent(num);
+            unregisterEvent(num);
+        }
+
+        function removeIngredientFields(id) {
+            $('#cInput' + id).remove(this);
+        }
+
+        function registerEvent(id) {
+            $('#qty' + id).keydown(function(event) {
+                if ($('#qty' + id).length == 1)
+                    addIngredientFields();
+            });
+        }
+
+        function unregisterEvent(id) {
+            $('#qty' + (id -1)).unbind('keydown');
+        }
+    </script>
 {% endblock %}

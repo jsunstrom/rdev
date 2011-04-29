@@ -6,8 +6,13 @@
 
 {% block contents %}
 <div class="recipe">
-{{recipe.name}}
+{{recipe.name}} by {{ recipe.created_by }}
 <br />
 {{recipe.created_on|date}}
+{% for ingredient in ingredients %}
+<div>
+    {{ ingredient.quantity }} {{ ingredient.unit }} {{ ingredient.name }}
+</div>
+{% endfor %}
 </div>
 {% endblock %}

@@ -16,8 +16,8 @@ class Recipe(db.Model):
 
 class Ingredient(db.Model):
     recipe = db.ReferenceProperty(Recipe, collection_name='ingredients')
-    quantity = db.FloatProperty(required=True)
-    unit_of_measure = db.StringProperty()
+    quantity = db.StringProperty(required=True)
+    unit = db.StringProperty()
     name = db.StringProperty(required=True)
 
 
